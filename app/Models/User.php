@@ -10,7 +10,9 @@ use Spatie\Permission\Traits\HasRoles;
 
 use Auth;
 
-class User extends Authenticatable implements MustVerifyEmailContract
+use Tymon\JWTAuth\Contracts\JWTSubject;
+
+class User extends Authenticatable implements MustVerifyEmailContract,JWTSubject
 {
     use MustVerifyEmailTrait;
 
@@ -96,5 +98,15 @@ class User extends Authenticatable implements MustVerifyEmailContract
         }
 
         $this->attributes['avatar'] = $path;
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }
