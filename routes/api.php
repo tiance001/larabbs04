@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 
 Route::prefix('v1')->namespace('Api')
+                   ->middleware('change-locale')
                    ->name('api.v1.')
                    // ->middleware('throttle:1,1')
                    ->group(function () {
