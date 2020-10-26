@@ -53,6 +53,12 @@ Route::prefix('v1')->namespace('Api')
             Route::resource('topics', 'TopicsController')->only([
                 'index', 'show'
             ]);
+            // 话题回复列表
+            Route::get('topics/{topic}/replies', 'RepliesController@index')
+                ->name('topics.replies.index');
+            // 某个用户的回复列表
+            Route::get('users/{user}/replies', 'RepliesController@userIndex')
+                ->name('users.replies.index');
 
             // 登录后可以访问的接口
             Route::middleware('auth:api')->group(function() {
@@ -69,6 +75,21 @@ Route::prefix('v1')->namespace('Api')
                 Route::resource('topics', 'TopicsController')->only([
                     'store', 'update', 'destroy'
                 ]);
+                // 发布回复
+                Route::post('topics/{topic}/replies', 'RepliesController@store')
+                    ->name('topics.replies.store');
+                // 删除回复
+                Route::delete('topics/{topic}/replies/{reply}', 'RepliesController@destroy')
+                    ->name('topics.replies.destroy');
+                // 通知列表
+                Route::get('notifications', 'NotificationsController@index')
+                    ->name('notifications.index');
+                // 通知统计
+                Route::get('notifications/stats', 'NotificationsController@stats')
+                    ->name('notifications.stats');
+                // 标记消息通知为已读
+                Route::patch('user/read/notifications', 'NotificationsController@read')
+                    ->name('user.notifications.read');
             });
 
         });
